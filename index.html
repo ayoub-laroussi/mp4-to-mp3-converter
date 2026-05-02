@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MP4 → MP3 Converter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ─── Title Bar ─────────────────────────────────────── -->
+  <header id="titlebar">
+    <div class="titlebar-left">
+      <svg class="titlebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18V5l12-2v13" stroke="url(#grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6" cy="18" r="3" stroke="url(#grad)" stroke-width="2"/>
+        <circle cx="18" cy="16" r="3" stroke="url(#grad)" stroke-width="2"/>
+        <defs><linearGradient id="grad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+      </svg>
+      <span class="titlebar-title">MP4 → MP3 Converter</span>
+    </div>
+    <div class="titlebar-controls">
+      <button id="btn-minimize" class="titlebar-btn" aria-label="Minimiser">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="12" height="2" rx="1" fill="currentColor"/></svg>
+      </button>
+      <button id="btn-maximize" class="titlebar-btn" aria-label="Agrandir">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      </button>
+      <button id="btn-close" class="titlebar-btn btn-close" aria-label="Fermer">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── Main Content ──────────────────────────────────── -->
+  <main id="app">
+
+    <!-- Drop Zone -->
+    <div id="drop-zone" class="drop-zone">
+      <div class="drop-zone-content">
+        <div class="drop-icon-wrapper">
+          <svg class="drop-icon" width="64" height="64" viewBox="0 0 24 24" fill="none">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="17 8 12 3 7 8" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="3" x2="12" y2="15" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="dropGrad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+          </svg>
+          <div class="drop-pulse"></div>
+        </div>
+        <p class="drop-title">Glissez vos fichiers MP4 ici</p>
+        <p class="drop-subtitle">ou cliquez pour parcourir</p>
+        <input type="file" id="file-input" accept=".mp4,.mkv,.avi,.mov,.webm,.flv,.wmv" multiple hidden />
+      </div>
+    </div>
+
+    <!-- Settings Row -->
+    <div id="settings-row" class="settings-row">
+      <div class="setting-group">
+        <label class="setting-label">Dossier de sortie</label>
+        <button id="btn-output-folder" class="btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          <span id="output-folder-text">Même dossier que la vidéo</span>
+        </button>
+      </div>
+      <div class="setting-group">
+        <label class="setting-label">Qualité audio</label>
+        <select id="bitrate-select" class="select-input">
+          <option value="128">128 kbps – Compact</option>
+          <option value="192" selected>192 kbps – Standard</option>
+          <option value="256">256 kbps – Haute qualité</option>
+          <option value="320">320 kbps – Maximum</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- File List -->
+    <div id="file-list" class="file-list"></div>
+
+    <!-- Convert Button -->
+    <div id="action-bar" class="action-bar hidden">
+      <div class="file-count">
+        <span id="file-count-number">0</span> fichier(s) sélectionné(s)
+      </div>
+      <button id="btn-convert" class="btn-convert">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Convertir tout
+      </button>
+    </div>
+
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
