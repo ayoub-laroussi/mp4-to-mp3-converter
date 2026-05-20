@@ -11,18 +11,31 @@
 </head>
 <body>
 
-  <!-- ─── Title Bar ─────────────────────────────────────── -->
+  <!-- ─── Title Bar ──────────────────────────────────────────────────
+       On macOS the native traffic lights sit in the top-left corner
+       of the window (inside the "inset" area).  We add a left padding
+       via --mac-traffic-light-width so the app title / icon don't
+       overlap the traffic lights.  On Windows the custom controls are
+       rendered as before.
+  ──────────────────────────────────────────────────────────────────── -->
   <header id="titlebar">
     <div class="titlebar-left">
       <svg class="titlebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
         <path d="M9 18V5l12-2v13" stroke="url(#grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="6" cy="18" r="3" stroke="url(#grad)" stroke-width="2"/>
         <circle cx="18" cy="16" r="3" stroke="url(#grad)" stroke-width="2"/>
-        <defs><linearGradient id="grad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="24" y2="24">
+            <stop stop-color="#a855f7"/>
+            <stop offset="1" stop-color="#6366f1"/>
+          </linearGradient>
+        </defs>
       </svg>
       <span class="titlebar-title">MP4 → MP3 Converter</span>
     </div>
-    <div class="titlebar-controls">
+
+    <!-- Custom controls – hidden on macOS (native traffic lights used) -->
+    <div class="titlebar-controls" id="titlebar-controls">
       <button id="btn-minimize" class="titlebar-btn" aria-label="Minimiser">
         <svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="12" height="2" rx="1" fill="currentColor"/></svg>
       </button>
@@ -35,7 +48,7 @@
     </div>
   </header>
 
-  <!-- ─── Main Content ──────────────────────────────────── -->
+  <!-- ─── Main Content ──────────────────────────────────────────── -->
   <main id="app">
 
     <!-- Drop Zone -->
@@ -46,12 +59,17 @@
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <polyline points="17 8 12 3 7 8" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <line x1="12" y1="3" x2="12" y2="15" stroke="url(#dropGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs><linearGradient id="dropGrad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+            <defs>
+              <linearGradient id="dropGrad" x1="0" y1="0" x2="24" y2="24">
+                <stop stop-color="#a855f7"/>
+                <stop offset="1" stop-color="#6366f1"/>
+              </linearGradient>
+            </defs>
           </svg>
           <div class="drop-pulse"></div>
         </div>
-        <p class="drop-title">Glissez vos fichiers MP4 ici</p>
-        <p class="drop-subtitle">ou cliquez pour parcourir</p>
+        <p class="drop-title">Glissez vos fichiers vidéo ici</p>
+        <p class="drop-subtitle">ou cliquez pour parcourir · MP4, MKV, AVI, MOV, WEBM…</p>
         <input type="file" id="file-input" accept=".mp4,.mkv,.avi,.mov,.webm,.flv,.wmv" multiple hidden />
       </div>
     </div>
@@ -61,7 +79,9 @@
       <div class="setting-group">
         <label class="setting-label">Dossier de sortie</label>
         <button id="btn-output-folder" class="btn-outline">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+          </svg>
           <span id="output-folder-text">Même dossier que la vidéo</span>
         </button>
       </div>
@@ -79,15 +99,25 @@
     <!-- File List -->
     <div id="file-list" class="file-list"></div>
 
-    <!-- Convert Button -->
+    <!-- Action Bar -->
     <div id="action-bar" class="action-bar hidden">
       <div class="file-count">
         <span id="file-count-number">0</span> fichier(s) sélectionné(s)
       </div>
-      <button id="btn-convert" class="btn-convert">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Convertir tout
-      </button>
+      <div class="action-bar-buttons">
+        <button id="btn-clear" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+          Vider
+        </button>
+        <button id="btn-convert" class="btn-convert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Convertir tout
+        </button>
+      </div>
     </div>
 
   </main>

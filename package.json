@@ -1,15 +1,19 @@
 {
   "name": "mp4-to-mp3-converter",
-  "version": "1.0.0",
-  "description": "Convertisseur MP4 vers MP3",
+  "version": "1.1.0",
+  "description": "Convertisseur MP4 vers MP3 — Windows & macOS",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron .",
-    "build": "electron-builder --win",
-    "build:dir": "electron-builder --win --dir"
+    "start":          "electron .",
+    "dev":            "electron .",
+    "build":          "electron-builder --mac",
+    "build:dir":      "electron-builder --mac --dir",
+    "build:win":      "electron-builder --win",
+    "build:win:dir":  "electron-builder --win --dir",
+    "build:all":      "electron-builder --mac --win"
   },
   "author": "Bayou",
+  "modifiedBy": "Modifié par @syn008 sur Discord",
   "license": "ISC",
   "type": "commonjs",
   "build": {
@@ -30,14 +34,27 @@
     "asarUnpack": [
       "node_modules/ffmpeg-static/**"
     ],
+    "mac": {
+      "icon": "icon.icns",
+      "category": "public.app-category.utilities",
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ],
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist"
+    },
+    "dmg": {
+      "title": "MP4 to MP3 Converter",
+      "backgroundColor": "#0a0a0f",
+      "window": { "width": 540, "height": 380 }
+    },
     "win": {
       "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
+        { "target": "nsis", "arch": ["x64"] }
       ],
       "icon": "icon.ico"
     },
