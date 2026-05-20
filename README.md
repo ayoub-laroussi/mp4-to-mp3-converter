@@ -176,5 +176,5 @@ Ce projet est sous licence [ISC](LICENSE).
 
 <p align="center">
   Fait avec ❤️ par <a href="https://github.com/ayoub-laroussi">Ayoub Laroussi</a><br/>
-  Améliorations macOS par @syn008 sur Discord
+  Rendu compatible avec macOS intel/apple silicon par @caillou_airm4 sur Discord
 </p>
